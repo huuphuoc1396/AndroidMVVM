@@ -1,6 +1,7 @@
 package com.example.androidmvvm.remote.error
 
 import com.example.androidmvvm.core.error.ApiFailure
+import com.example.androidmvvm.core.error.FailureHandler
 import com.example.androidmvvm.core.extension.default
 import com.example.androidmvvm.core.extension.defaultEmpty
 import com.example.androidmvvm.remote.response.ServerErrorResponse
@@ -10,8 +11,8 @@ import timber.log.Timber
 import java.io.IOException
 import javax.inject.Inject
 
-class RemoteFailureHandler @Inject constructor() {
-    fun handleThrowable(throwable: Throwable) = when (throwable) {
+class RemoteFailureHandler @Inject constructor() : FailureHandler {
+    override fun handleThrowable(throwable: Throwable) = when (throwable) {
         is IOException -> ApiFailure.Connection
         is HttpException -> handleHttpException(throwable)
         else -> null

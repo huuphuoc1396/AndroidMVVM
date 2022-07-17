@@ -28,8 +28,6 @@ class DefaultRetrofitBuilder @Inject constructor() {
 
     private var isChuckerEnabled = false
 
-    private var isStethoEnabled = false
-
     fun baseUrl(baseUrl: String): DefaultRetrofitBuilder {
         this.baseUrl = baseUrl
         return this

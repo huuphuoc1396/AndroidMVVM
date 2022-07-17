@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
@@ -56,11 +55,11 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     private fun observeBaseViewModel() {
         val baseViewModel = viewModel as? BaseViewModel ?: return
         baseViewModel.failure.observe(this) { failure ->
-            showError(failure)
+            onError(failure)
         }
 
         baseViewModel.isLoading.observe(this) { isLoading ->
-            showLoading(isLoading)
+            onLoading(isLoading)
         }
     }
 
@@ -120,7 +119,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         super.onDetach()
     }
 
-    open fun showError(failure: Failure) {
+    open fun onError(failure: Failure) {
         val message = when (failure) {
             is ApiFailure.Connection -> {
                 getString(R.string.msg_no_internet_error)
@@ -134,10 +133,13 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
                 getString(R.string.msg_unknown_error)
             }
         }
-        Toast.makeText(requireContext(), message, Toast.LENGTH_SHORT).show()
+        ErrorDialogFragment.newInstance(message).showIfNotExist(
+            fragmentManager = childFragmentManager,
+            tag = ErrorDialogFragment.TAG,
+        )
     }
 
-    open fun showLoading(isLoading: Boolean) {
+    open fun onLoading(isLoading: Boolean) {
         if (isLoading && activity.isAvailable()) {
             if (loadingDialogFragment == null) {
                 loadingDialogFragment = LoadingDialogFragment.newInstance()

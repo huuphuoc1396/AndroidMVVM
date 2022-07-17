@@ -24,7 +24,7 @@ class RemoteModule {
         headerInterceptor: HeaderInterceptor,
         defaultRetrofitBuilder: DefaultRetrofitBuilder,
     ): ApiService {
-        return defaultRetrofitBuilder.baseUrl("/")
+        return defaultRetrofitBuilder.baseUrl("https://api.github.com")
             .enableLogging(BuildConfig.DEBUG)
             .enableChucker(context, BuildConfig.DEBUG)
             .addInterceptor(headerInterceptor)

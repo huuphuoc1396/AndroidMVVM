@@ -1,5 +1,7 @@
 <resources>
     <string name="app_name">MVVM</string>
+    <string name="ok">OK</string>
+    <string name="title_error">Error</string>
     <string name="msg_unknown_error">Unknown error</string>
     <string name="msg_unexpected_error">Network connection failed. Please try again!</string>
     <string name="msg_no_internet_error">Please check your internet connection and try again!</string>

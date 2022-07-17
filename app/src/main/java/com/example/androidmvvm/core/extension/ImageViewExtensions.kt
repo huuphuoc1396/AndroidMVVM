@@ -5,8 +5,10 @@ import androidx.appcompat.content.res.AppCompatResources
 import androidx.appcompat.widget.AppCompatImageView
 import com.bumptech.glide.Glide
 
-fun AppCompatImageView.setImageUrl(url: String?, @DrawableRes placeholder: Int?) {
-    val placeholderDrawable = placeholder?.let { AppCompatResources.getDrawable(context, it) }
+fun AppCompatImageView.setImageUrl(url: String?, @DrawableRes placeholder: Int? = null) {
+    val placeholderDrawable = placeholder?.let {
+        AppCompatResources.getDrawable(context, placeholder)
+    }
     if (placeholderDrawable == null) {
         Glide.with(context)
             .load(url)
