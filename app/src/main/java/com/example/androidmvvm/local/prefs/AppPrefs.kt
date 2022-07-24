@@ -7,7 +7,8 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.androidmvvm.core.extension.defaultFalse
+import com.example.androidmvvm.core.extension.defaultTrue
+import com.example.androidmvvm.core.functional.safeSuspendIgnoreFailure
 import com.example.androidmvvm.local.prefs.AppPrefs.PreferencesKeys.KEY_FIRST_RUN
 import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.flow.first
@@ -22,9 +23,13 @@ class AppPrefs @Inject constructor(
     private val context: Context
 ) {
 
-    suspend fun setFirstRun(isFirstRun: Boolean) = edit { it[KEY_FIRST_RUN] = isFirstRun }
+    suspend fun setFirstRun(isFirstRun: Boolean) = safeSuspendIgnoreFailure {
+        edit { it[KEY_FIRST_RUN] = isFirstRun }
+    }
 
-    suspend fun isFirstRun(): Boolean = get { it[KEY_FIRST_RUN].defaultFalse() }
+    suspend fun isFirstRun(): Boolean = safeSuspendIgnoreFailure {
+        get { it[KEY_FIRST_RUN] }
+    }.defaultTrue()
 
     private suspend fun <T> get(transform: (Preferences) -> T): T =
         context.appPrefs.data.map { transform(it) }.first()

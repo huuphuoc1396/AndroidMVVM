@@ -38,6 +38,12 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
             hideRefreshing()
             repoAdapter.submitList(repoList)
         }
+
+        isFirstRun.observe(viewLifecycleOwner) { isFirstRun ->
+            if (isFirstRun) {
+                context?.toast("First Run!!!")
+            }
+        }
     }
 
     private fun hideRefreshing() {
