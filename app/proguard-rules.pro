@@ -199,3 +199,10 @@
 -keep,allowobfuscation,allowshrinking class * extends com.google.gson.reflect.TypeToken
 
 ##---------------End: proguard configuration for Gson  ----------
+
+-keep class * extends androidx.fragment.app.Fragment{}
+-keepnames class com.path.to.your.ParcelableArg
+-keepnames class com.path.to.your.SerializableArg
+-keepnames class com.path.to.your.EnumArg
+-keepnames class * extends android.os.Parcelable
+-keepnames class * extends java.io.Serializable
