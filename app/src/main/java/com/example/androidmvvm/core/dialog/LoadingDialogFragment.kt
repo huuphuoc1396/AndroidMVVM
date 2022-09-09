@@ -1,4 +1,4 @@
-package com.example.androidmvvm.feature.dialog
+package com.example.androidmvvm.core.dialog
 
 import android.os.Bundle
 import android.view.LayoutInflater

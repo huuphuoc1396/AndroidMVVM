@@ -1,4 +1,4 @@
-package com.example.androidmvvm.core.platform
+package com.example.androidmvvm.core.dialog
 
 import android.app.Dialog
 import android.os.Bundle

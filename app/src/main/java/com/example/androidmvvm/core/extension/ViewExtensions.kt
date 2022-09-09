@@ -42,7 +42,3 @@ fun View.visibleOrInvisible(isVisible: Boolean) {
         invisible()
     }
 }
-
-fun View.getDrawableByName(name: String): Int {
-    return resources.getIdentifier(name, "drawable", this.context.packageName)
-}

@@ -10,13 +10,14 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.androidmvvm.R
+import com.example.androidmvvm.core.dialog.ErrorDialogFragment
+import com.example.androidmvvm.core.dialog.LoadingDialogFragment
 import com.example.androidmvvm.core.error.ApiFailure
 import com.example.androidmvvm.core.error.Failure
 import com.example.androidmvvm.core.extension.dismissIfAdded
 import com.example.androidmvvm.core.extension.isAvailable
 import com.example.androidmvvm.core.extension.showIfNotExist
 import com.example.androidmvvm.core.livedata.autoCleared
-import com.example.androidmvvm.feature.dialog.LoadingDialogFragment
 import timber.log.Timber
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
