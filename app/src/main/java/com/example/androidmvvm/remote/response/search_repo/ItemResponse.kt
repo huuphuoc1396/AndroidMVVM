@@ -1,9 +1,9 @@
 package com.example.androidmvvm.remote.response.search_repo
 
 
-import com.example.androidmvvm.core.extension.defaultEmpty
-import com.example.androidmvvm.core.extension.defaultZero
-import com.example.androidmvvm.feature.main.model.RepoItem
+import com.example.androidmvvm.util.extension.defaultEmpty
+import com.example.androidmvvm.util.extension.defaultZero
+import com.example.androidmvvm.model.main.RepoModel
 import com.google.gson.annotations.SerializedName
 
 data class ItemResponse(
@@ -167,7 +167,7 @@ data class ItemResponse(
     val webCommitSignoffRequired: Boolean? = null
 )
 
-fun ItemResponse.toRepoItem() = RepoItem(
+fun ItemResponse.toRepoItem() = RepoModel(
     id = id.defaultZero(),
     repoName = name.defaultEmpty(),
     ownerName = owner?.login.defaultEmpty(),

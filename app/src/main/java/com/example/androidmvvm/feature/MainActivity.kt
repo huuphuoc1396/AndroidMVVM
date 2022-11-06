@@ -1,7 +1,7 @@
 package com.example.androidmvvm.feature
 
 import android.os.Bundle
-import com.example.androidmvvm.core.platform.BaseActivity
+import com.example.androidmvvm.platform.BaseActivity
 import com.example.androidmvvm.databinding.ActivityMainBinding
 import dagger.hilt.android.AndroidEntryPoint
 

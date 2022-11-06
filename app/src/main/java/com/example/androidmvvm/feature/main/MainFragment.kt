@@ -5,10 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
-import com.example.androidmvvm.core.error.Failure
-import com.example.androidmvvm.core.extension.toast
-import com.example.androidmvvm.core.livedata.autoCleared
-import com.example.androidmvvm.core.platform.BaseFragment
+import com.example.androidmvvm.util.extension.toast
+import com.example.androidmvvm.util.livedata.autoCleared
+import com.example.androidmvvm.platform.BaseFragment
 import com.example.androidmvvm.databinding.FragmentMainBinding
 import com.example.androidmvvm.feature.main.list.RepoAdapter
 import dagger.hilt.android.AndroidEntryPoint
@@ -70,8 +69,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         rvRepos.adapter = repoAdapter
     }
 
-    override fun onError(failure: Failure) {
-        super.onError(failure)
+    override fun onError(error: Error) {
+        super.onError(error)
         hideRefreshing()
     }
 }

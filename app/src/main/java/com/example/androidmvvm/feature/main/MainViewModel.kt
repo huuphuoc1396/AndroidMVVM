@@ -2,11 +2,11 @@ package com.example.androidmvvm.feature.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
-import com.example.androidmvvm.core.functional.onError
-import com.example.androidmvvm.core.functional.onSuccess
-import com.example.androidmvvm.core.livedata.SingleLiveData
-import com.example.androidmvvm.core.platform.BaseViewModel
-import com.example.androidmvvm.feature.main.model.RepoItem
+import com.example.androidmvvm.model.functional.onError
+import com.example.androidmvvm.model.functional.onSuccess
+import com.example.androidmvvm.util.livedata.SingleLiveData
+import com.example.androidmvvm.platform.BaseViewModel
+import com.example.androidmvvm.model.main.RepoModel
 import com.example.androidmvvm.local.prefs.AppPrefs
 import com.example.androidmvvm.repository.RepoRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -19,7 +19,7 @@ class MainViewModel @Inject constructor(
     private val appPrefs: AppPrefs,
 ) : BaseViewModel() {
 
-    val repoList = MutableLiveData<List<RepoItem>>()
+    val repoList = MutableLiveData<List<RepoModel>>()
     val isFirstRun = SingleLiveData<Boolean>()
 
     init {
