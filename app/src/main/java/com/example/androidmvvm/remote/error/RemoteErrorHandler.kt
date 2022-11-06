@@ -2,16 +2,15 @@ package com.example.androidmvvm.remote.error
 
 import com.example.androidmvvm.model.error.ApiError
 import com.example.androidmvvm.model.functional.ErrorHandler
+import com.example.androidmvvm.remote.response.ServerErrorResponse
 import com.example.androidmvvm.util.extension.default
 import com.example.androidmvvm.util.extension.defaultEmpty
-import com.example.androidmvvm.remote.response.ServerErrorResponse
 import com.google.gson.Gson
 import retrofit2.HttpException
 import timber.log.Timber
 import java.io.IOException
-import javax.inject.Inject
 
-class RemoteErrorHandler @Inject constructor() : ErrorHandler {
+class RemoteErrorHandler : ErrorHandler {
     override fun handleThrowable(throwable: Throwable) = when (throwable) {
         is IOException -> ApiError.Connection
         is HttpException -> handleHttpException(throwable)

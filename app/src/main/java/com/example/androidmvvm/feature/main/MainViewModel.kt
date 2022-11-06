@@ -2,19 +2,16 @@ package com.example.androidmvvm.feature.main
 
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.androidmvvm.local.prefs.AppPrefs
 import com.example.androidmvvm.model.functional.onError
 import com.example.androidmvvm.model.functional.onSuccess
-import com.example.androidmvvm.util.livedata.SingleLiveData
-import com.example.androidmvvm.platform.BaseViewModel
 import com.example.androidmvvm.model.main.RepoModel
-import com.example.androidmvvm.local.prefs.AppPrefs
+import com.example.androidmvvm.platform.BaseViewModel
 import com.example.androidmvvm.repository.RepoRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
+import com.example.androidmvvm.util.livedata.SingleLiveData
 import kotlinx.coroutines.launch
-import javax.inject.Inject
 
-@HiltViewModel
-class MainViewModel @Inject constructor(
+class MainViewModel constructor(
     private val repoRepository: RepoRepository,
     private val appPrefs: AppPrefs,
 ) : BaseViewModel() {

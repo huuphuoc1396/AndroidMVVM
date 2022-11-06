@@ -33,7 +33,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         override fun handleOnBackPressed() {
             if (onBackPressed()) {
                 isEnabled = false
-                activity?.onBackPressed()
+                activity?.onBackPressedDispatcher?.onBackPressed()
             }
         }
     }

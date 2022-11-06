@@ -6,11 +6,8 @@ import com.example.androidmvvm.model.main.RepoModel
 import com.example.androidmvvm.remote.error.RemoteErrorHandler
 import com.example.androidmvvm.remote.response.search_repo.toRepoItem
 import com.example.androidmvvm.remote.retrofit.api.ApiService
-import javax.inject.Inject
-import javax.inject.Singleton
 
-@Singleton
-class RepoRepository @Inject constructor(
+class RepoRepository constructor(
     private val apiService: ApiService,
     private val remoteFailureHandler: RemoteErrorHandler,
 ) {

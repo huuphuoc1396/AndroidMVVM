@@ -1,11 +1,9 @@
 package com.example.androidmvvm.feature
 
 import android.os.Bundle
-import com.example.androidmvvm.platform.BaseActivity
 import com.example.androidmvvm.databinding.ActivityMainBinding
-import dagger.hilt.android.AndroidEntryPoint
+import com.example.androidmvvm.platform.BaseActivity
 
-@AndroidEntryPoint
 class MainActivity : BaseActivity() {
 
     var viewBinding: ActivityMainBinding? = null

@@ -6,19 +6,16 @@ import androidx.datastore.preferences.core.Preferences
 import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
-import com.example.androidmvvm.util.extension.defaultTrue
-import com.example.androidmvvm.model.functional.safeSuspendIgnoreFailure
 import com.example.androidmvvm.local.prefs.AppPrefs.PreferencesKeys.KEY_FIRST_RUN
-import dagger.hilt.android.qualifiers.ApplicationContext
+import com.example.androidmvvm.model.functional.safeSuspendIgnoreFailure
+import com.example.androidmvvm.util.extension.defaultTrue
 import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
-import javax.inject.Inject
 
 private const val APP_PREFS_NAME = "app_data_store"
 val Context.appPrefs: DataStore<Preferences> by preferencesDataStore(APP_PREFS_NAME)
 
-class AppPrefs @Inject constructor(
-    @ApplicationContext
+class AppPrefs constructor(
     private val context: Context
 ) {
 
