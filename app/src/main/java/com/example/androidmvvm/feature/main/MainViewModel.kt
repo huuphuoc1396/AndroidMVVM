@@ -28,7 +28,7 @@ class MainViewModel constructor(
         viewModelScope.launch {
             setLoading(!isRefreshing)
             repoRepository.searchRepos(query)
-                .onError(::handleFailure)
+                .onError(::handleError)
                 .onSuccess {
                     repoList.value = it
                 }

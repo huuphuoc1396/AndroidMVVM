@@ -10,16 +10,17 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.androidmvvm.R
-import com.example.androidmvvm.feature.dialog.ErrorDialogFragment
+import com.example.androidmvvm.feature.MainActivity
 import com.example.androidmvvm.feature.dialog.LoadingDialogFragment
-import com.example.androidmvvm.model.error.ApiError
-import com.example.androidmvvm.util.extension.dismissIfAdded
-import com.example.androidmvvm.util.extension.isAvailable
-import com.example.androidmvvm.util.extension.showIfNotExist
+import com.example.androidmvvm.feature.dialog.MessageDialogFragment
+import com.example.androidmvvm.util.extension.*
 import com.example.androidmvvm.util.livedata.autoCleared
 import timber.log.Timber
 
 abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
+
+    private val mainActivity by lazy { activity as? MainActivity }
+    private val navigator by lazy { mainActivity?.stackNavigator }
 
     abstract val viewModel: VM?
 
@@ -33,7 +34,9 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         override fun handleOnBackPressed() {
             if (onBackPressed()) {
                 isEnabled = false
-                activity?.onBackPressedDispatcher?.onBackPressed()
+                if (!navigator?.pop().defaultFalse()) {
+                    activity?.moveTaskToBack(true)
+                }
             }
         }
     }
@@ -54,12 +57,15 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     private fun observeBaseViewModel() {
         val baseViewModel = viewModel as? BaseViewModel ?: return
-        baseViewModel.error.observe(this) { failure ->
-            onError(failure)
+        baseViewModel.error.observe(this) { error ->
+            onError(error.getErrorMessage(context))
         }
 
         baseViewModel.isLoading.observe(this) { isLoading ->
             onLoading(isLoading)
+        }
+        baseViewModel.tokenExpired.observe(this) {
+            // TODO: Handle expired token
         }
     }
 
@@ -106,6 +112,8 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
 
     override fun onDestroyView() {
         Timber.tag(LIFECYCLE_TAG).i("${this::class.simpleName} onDestroyView")
+        dismissLoading()
+        dismissKeyboard()
         super.onDestroyView()
     }
 
@@ -119,36 +127,64 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
         super.onDetach()
     }
 
-    open fun onError(error: Error) {
-        val message = when (error) {
-            is ApiError.Connection -> {
-                getString(R.string.msg_no_internet_error)
-            }
-            is ApiError.Server -> {
-                error.errorMessage.ifEmpty {
-                    getString(R.string.msg_unexpected_error)
-                }
-            }
-            else -> {
-                getString(R.string.msg_unknown_error)
-            }
-        }
-        ErrorDialogFragment.newInstance(message).showIfNotExist(
-            fragmentManager = childFragmentManager,
-            tag = ErrorDialogFragment.TAG,
-        )
+    open fun onError(message: String) {
+        MessageDialogFragment.newInstance(message)
+            .setPositiveButton(getString(R.string.txt_Ok))
+            .showIfNotExist(
+                fragmentManager = childFragmentManager,
+                tag = MessageDialogFragment.TAG,
+            )
     }
 
     open fun onLoading(isLoading: Boolean) {
         if (isLoading && activity.isAvailable()) {
-            if (loadingDialogFragment == null) {
-                loadingDialogFragment = LoadingDialogFragment.newInstance()
-            }
-            loadingDialogFragment?.showIfNotExist(childFragmentManager, LoadingDialogFragment.TAG)
+            showLoading()
         } else {
-            loadingDialogFragment?.dismissIfAdded()
-            loadingDialogFragment = null
+            dismissLoading()
         }
+    }
+
+    private fun showLoading() {
+        if (loadingDialogFragment == null) {
+            loadingDialogFragment = LoadingDialogFragment.newInstance()
+        }
+        activity?.supportFragmentManager?.let { fragmentManager ->
+            loadingDialogFragment?.showIfNotExist(fragmentManager, LoadingDialogFragment.TAG)
+        }
+    }
+
+    private fun dismissLoading() {
+        loadingDialogFragment?.dismissIfAdded()
+        loadingDialogFragment = null
+    }
+
+    fun navigate(fragment: Fragment, clearAll: Boolean = false) = navigator?.apply {
+        if (clearAll) {
+            clear(includeMatch = true)
+        }
+        push(fragment, fragment.javaClass.name)
+    }
+
+    fun navigateUp(upToTag: String? = null, includeMatch: Boolean = false) {
+        navigator?.clear(upToTag, includeMatch)
+    }
+
+    fun navigateUp() {
+        navigator?.pop()
+    }
+
+    fun runWithPermission(
+        permission: String,
+        rationaleMessage: String,
+        onPermissionGranted: () -> Unit = {},
+        onPermissionDenied: () -> Unit = {}
+    ) {
+        this.mainActivity?.runWithPermission(
+            permission = permission,
+            rationaleMessage = rationaleMessage,
+            onPermissionGranted = onPermissionGranted,
+            onPermissionDenied = onPermissionDenied,
+        )
     }
 
     companion object {

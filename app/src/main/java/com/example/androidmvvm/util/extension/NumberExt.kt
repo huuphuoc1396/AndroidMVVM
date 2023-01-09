@@ -52,3 +52,28 @@ fun Float.format2Digits(): String {
 fun BigDecimal.format2Digits(): String {
     return numberFormat2Digits.format(this)
 }
+
+val numberFormat1Digits = DecimalFormat("#,##0.0", DecimalFormatSymbols.getInstance().apply {
+    groupingSeparator = GROUPING_SEPARATOR
+    decimalSeparator = DECIMAL_SEPARATOR
+})
+
+fun Int.format1Digits(): String {
+    return numberFormat1Digits.format(this)
+}
+
+fun Long.format1Digits(): String {
+    return numberFormat1Digits.format(this)
+}
+
+fun Double.format1Digits(): String {
+    return numberFormat1Digits.format(this)
+}
+
+fun Float.format1Digits(): String {
+    return numberFormat1Digits.format(this)
+}
+
+fun BigDecimal.format1Digits(): String {
+    return numberFormat1Digits.format(this)
+}

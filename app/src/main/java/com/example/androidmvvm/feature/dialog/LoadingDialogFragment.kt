@@ -4,8 +4,8 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import com.example.androidmvvm.R
-import com.example.androidmvvm.platform.BaseFullScreenDialogFragment
 import com.example.androidmvvm.databinding.DialogLoadingBinding
+import com.example.androidmvvm.platform.BaseFullScreenDialogFragment
 
 class LoadingDialogFragment : BaseFullScreenDialogFragment<DialogLoadingBinding>() {
 

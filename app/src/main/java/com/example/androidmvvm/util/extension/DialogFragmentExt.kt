@@ -6,7 +6,7 @@ import androidx.fragment.app.FragmentManager
 fun DialogFragment.showIfNotExist(fragmentManager: FragmentManager, tag: String?) {
     val isNotExist = fragmentManager.findFragmentByTag(tag) == null
     if (isNotExist) {
-        showNow(fragmentManager, tag)
+        show(fragmentManager, tag)
     }
 }
 

@@ -8,4 +8,6 @@ sealed class ApiError : Error() {
         val code: Int,
         val errorMessage: String,
     ) : ApiError()
+
+    object Unauthorized : ApiError()
 }

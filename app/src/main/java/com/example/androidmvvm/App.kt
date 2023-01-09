@@ -1,7 +1,6 @@
 package com.example.androidmvvm
 
 import android.app.Application
-import androidx.viewbinding.BuildConfig
 import com.example.androidmvvm.feature.di.viewModelModule
 import com.example.androidmvvm.local.di.localModule
 import com.example.androidmvvm.remote.di.remoteModule

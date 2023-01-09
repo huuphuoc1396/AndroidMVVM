@@ -13,6 +13,10 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
+    companion object {
+        fun newInstance() = MainFragment()
+    }
+
     private var repoAdapter by autoCleared<RepoAdapter>()
 
     override val viewModel: MainViewModel by viewModel()
@@ -67,8 +71,8 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
         rvRepos.adapter = repoAdapter
     }
 
-    override fun onError(error: Error) {
-        super.onError(error)
+    override fun onError(message: String) {
         hideRefreshing()
+        super.onError(message)
     }
 }

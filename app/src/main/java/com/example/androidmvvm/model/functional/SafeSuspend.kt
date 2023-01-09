@@ -1,9 +1,10 @@
 package com.example.androidmvvm.model.functional
 
-import com.example.androidmvvm.model.error.DefaultError
+import com.example.androidmvvm.model.error.UnknownError
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import timber.log.Timber
 
 suspend fun <R> safeSuspend(
     vararg errorHandlers: ErrorHandler,
@@ -13,13 +14,14 @@ suspend fun <R> safeSuspend(
     try {
         action()
     } catch (exception: Exception) {
+        Timber.e(exception)
         errorHandlers.forEach { failureHandler ->
             val failure = failureHandler.handleThrowable(exception)
             if (failure != null) {
-                ResultWrapper.Failure(failure)
+                return@withContext ResultWrapper.Failure(failure)
             }
         }
-        ResultWrapper.Failure(DefaultError(exception))
+        return@withContext ResultWrapper.Failure(UnknownError(exception))
     }
 }
 
@@ -30,6 +32,7 @@ suspend fun <R> safeSuspendIgnoreFailure(
     try {
         action()
     } catch (exception: Exception) {
+        Timber.e(exception)
         null
     }
 }

@@ -2,8 +2,13 @@ plugins {
     id "com.android.application"
     id "org.jetbrains.kotlin.android"
     id "kotlin-kapt"
-    id "androidx.navigation.safeargs"
+    id "kotlin-parcelize"
 }
+
+apply {
+    from("auto-dimensions.gradle")
+}
+
 
 android {
     signingConfigs {
@@ -14,12 +19,12 @@ android {
             keyPassword '123456'
         }
     }
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.example.androidmvvm"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -34,6 +39,19 @@ android {
             proguardFiles getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro"
         }
     }
+
+    flavorDimensions "default"
+    productFlavors {
+        dev {
+
+            applicationIdSuffix ".dev"
+        }
+
+        prod {
+
+        }
+    }
+
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
@@ -51,14 +69,12 @@ android {
 
 dependencies {
 
-    implementation "androidx.core:core-ktx:1.8.0"
+    implementation "androidx.core:core-ktx:1.9.0"
     implementation "androidx.appcompat:appcompat:1.5.1"
     implementation "androidx.fragment:fragment-ktx:1.5.4"
     implementation "com.google.android.material:material:1.7.0"
     implementation "androidx.constraintlayout:constraintlayout:2.1.4"
     implementation "androidx.swiperefreshlayout:swiperefreshlayout:1.1.0"
-    implementation "androidx.navigation:navigation-fragment-ktx:2.5.3"
-    implementation "androidx.navigation:navigation-ui-ktx:2.5.3"
     implementation "androidx.datastore:datastore-preferences:1.0.0"
 
     implementation "io.insert-koin:koin-android:3.3.0"
@@ -79,4 +95,18 @@ dependencies {
     annotationProcessor "com.github.bumptech.glide:compiler:4.13.2"
 
     debugImplementation 'com.squareup.leakcanary:leakcanary-android:2.9.1'
+
+    implementation 'com.tunjid.androidx:navigation:1.2.1'
+
+    implementation "androidx.core:core-splashscreen:1.0.0"
+
+    implementation platform('com.google.firebase:firebase-bom:31.1.0')
+    implementation 'com.google.firebase:firebase-crashlytics-ktx'
+    implementation 'com.google.firebase:firebase-analytics-ktx'
+    implementation 'com.google.firebase:firebase-messaging-ktx'
+
+    implementation "com.tbuonomo:dotsindicator:4.3"
+
+    implementation "androidx.room:room-ktx:2.4.3"
+    kapt "androidx.room:room-compiler:2.4.3"
 }

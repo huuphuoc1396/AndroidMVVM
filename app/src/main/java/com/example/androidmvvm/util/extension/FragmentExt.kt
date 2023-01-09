@@ -3,6 +3,7 @@ package com.example.androidmvvm.util.extension
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentTransaction
+import com.example.androidmvvm.util.extension.dismissKeyboard
 
 fun Fragment.addFragment(
     fragment: Fragment,
@@ -38,3 +39,8 @@ inline fun FragmentManager.inTransaction(func: FragmentTransaction.() -> Unit) {
     fragmentTransaction.commit()
 }
 
+fun Fragment.dismissKeyboard() {
+    view?.run {
+        windowToken?.let { activity?.dismissKeyboard(it) }
+    }
+}

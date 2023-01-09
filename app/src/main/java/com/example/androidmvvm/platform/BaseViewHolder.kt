@@ -23,20 +23,20 @@ abstract class BaseViewHolder<Item>(
 
     }
 
-    protected abstract fun onBind(item: Item)
+    protected abstract fun onBind(item: Item, position: Int)
 
-    open fun onBind(item: Item, payloads: List<Any>) {
-        onBind(item)
+    open fun onBind(item: Item, position: Int, payloads: List<Any>) {
+        onBind(item, position)
     }
 
-    fun bind(item: Item) {
+    fun bind(item: Item, position: Int) {
         this.item = item
-        onBind(item)
+        onBind(item, position)
     }
 
 
-    fun bind(item: Item, payloads: List<Any>) {
+    fun bind(item: Item, position: Int, payloads: List<Any>) {
         this.item = item
-        onBind(item, payloads)
+        onBind(item, position, payloads)
     }
 }

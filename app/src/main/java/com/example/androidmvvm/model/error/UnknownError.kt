@@ -1,5 +1,5 @@
 package com.example.androidmvvm.model.error
 
-data class DefaultError(
+data class UnknownError(
     val exception: Exception,
 ) : Error()
