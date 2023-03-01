@@ -113,6 +113,12 @@
         <item name="android:windowBackground">@color/black_a30</item>
         <item name="android:statusBarColor">@color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowAnimationStyle">@style/AppTheme.Dialog.FullScreenAnimation</item>
+    </style>
+
+    <style name="AppTheme.Dialog.FullScreenAnimation" parent="Animation.AppCompat.Dialog">
+        <item name="android:windowEnterAnimation">@anim/fade_in</item>
+        <item name="android:windowExitAnimation">@anim/fade_out</item>
     </style>
 
     <style name="AppTheme.Dialog.Loading" parent="AppTheme.Dialog.FullScreen">

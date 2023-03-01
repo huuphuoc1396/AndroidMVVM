@@ -1,10 +1,10 @@
 package com.example.androidmvvm
 
 import android.app.Application
-import com.example.androidmvvm.feature.di.viewModelModule
-import com.example.androidmvvm.local.di.localModule
-import com.example.androidmvvm.remote.di.remoteModule
-import com.example.androidmvvm.repository.di.repositoryModule
+import com.example.androidmvvm.data.local.di.localModule
+import com.example.androidmvvm.data.remote.di.remoteModule
+import com.example.androidmvvm.data.repository.di.repositoryModule
+import com.example.androidmvvm.ui.feature.di.viewModelModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.core.context.startKoin
 import timber.log.Timber
