@@ -7,35 +7,31 @@ import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.preferencesDataStore
 import com.example.androidmvvm.data.local.prefs.AppPrefs.PreferencesKeys.KEY_FIRST_RUN
-import com.example.androidmvvm.domain.model.functional.safeSuspendIgnoreFailure
-import com.example.androidmvvm.domain.util.defaultTrue
-import kotlinx.coroutines.flow.first
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
-private const val APP_PREFS_NAME = "app_data_store"
+private const val APP_PREFS_NAME = "app_prefs"
 val Context.appPrefs: DataStore<Preferences> by preferencesDataStore(APP_PREFS_NAME)
 
 class AppPrefs constructor(
     private val context: Context
 ) {
 
-    suspend fun setFirstRun(isFirstRun: Boolean) = safeSuspendIgnoreFailure {
+    val isFirstRun: Flow<Boolean?> by lazy { get(KEY_FIRST_RUN) }
+
+    suspend fun setFirstRun(isFirstRun: Boolean) {
         edit(KEY_FIRST_RUN, isFirstRun)
     }
 
-    suspend fun isFirstRun(): Boolean = safeSuspendIgnoreFailure {
-        get(KEY_FIRST_RUN)
-    }.defaultTrue()
-
-    suspend fun clear() {
-        context.appPrefs.edit { prefs -> prefs.clear() }
-    }
-
-    private suspend fun <T> get(key: Preferences.Key<T>): T? =
-        context.appPrefs.data.map { prefs -> prefs[key] }.first()
+    private fun <T> get(key: Preferences.Key<T>): Flow<T?> =
+        context.appPrefs.data.map { prefs -> prefs[key] }
 
     private suspend fun <T> edit(key: Preferences.Key<T>, value: T) {
         context.appPrefs.edit { prefs -> prefs[key] = value }
+    }
+
+    suspend fun clear() {
+        context.appPrefs.edit { prefs -> prefs.clear() }
     }
 
     private object PreferencesKeys {

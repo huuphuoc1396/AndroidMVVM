@@ -1,7 +1,7 @@
 package com.example.androidmvvm.ui.feature.main.list
 
 import androidx.recyclerview.widget.DiffUtil
-import com.example.androidmvvm.domain.model.main.RepoModel
+import com.example.androidmvvm.domain.model.repo.RepoModel
 
 class RepoDiffCallback : DiffUtil.ItemCallback<RepoModel>() {
     override fun areItemsTheSame(oldItem: RepoModel, newItem: RepoModel): Boolean {

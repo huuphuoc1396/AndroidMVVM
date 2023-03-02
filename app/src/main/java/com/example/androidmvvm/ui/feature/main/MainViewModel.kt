@@ -1,14 +1,13 @@
 package com.example.androidmvvm.ui.feature.main
 
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.asLiveData
 import androidx.lifecycle.viewModelScope
 import com.example.androidmvvm.data.local.prefs.AppPrefs
-import com.example.androidmvvm.domain.model.functional.onError
-import com.example.androidmvvm.domain.model.functional.onSuccess
-import com.example.androidmvvm.domain.model.main.RepoModel
+import com.example.androidmvvm.domain.model.repo.RepoModel
 import com.example.androidmvvm.domain.repository.RepoRepository
 import com.example.androidmvvm.ui.platform.BaseViewModel
-import com.example.androidmvvm.ui.util.livedata.SingleLiveData
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 
 class MainViewModel constructor(
@@ -17,28 +16,28 @@ class MainViewModel constructor(
 ) : BaseViewModel() {
 
     val repoList = MutableLiveData<List<RepoModel>>()
-    val isFirstRun = SingleLiveData<Boolean>()
+    val firstRun = appPrefs.isFirstRun.asLiveData()
 
     init {
-        checkFirstRun()
         searchRepos("Android")
+        setFirstRun()
     }
 
     fun searchRepos(query: String, isRefreshing: Boolean = false) {
         viewModelScope.launch {
             setLoading(!isRefreshing)
             repoRepository.searchRepos(query)
-                .onError(::handleError)
-                .onSuccess {
-                    repoList.value = it
+                .handleError()
+                .collectLatest { list ->
+                    repoList.value = list
                 }
+        }.invokeOnCompletion {
             setLoading(false)
         }
     }
 
-    private fun checkFirstRun() {
+    private fun setFirstRun() {
         viewModelScope.launch {
-            isFirstRun.value = appPrefs.isFirstRun()
             appPrefs.setFirstRun(false)
         }
     }

@@ -2,6 +2,7 @@ package com.example.androidmvvm.data.remote.retrofit.builder
 
 import android.content.Context
 import com.chuckerteam.chucker.api.ChuckerInterceptor
+import com.example.androidmvvm.data.remote.retrofit.factory.FlowCallAdapterFactory
 import okhttp3.Interceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -87,6 +88,7 @@ class DefaultRetrofitBuilder {
         return Retrofit.Builder()
             .baseUrl(baseUrl)
             .client(okHttpClient)
+            .addCallAdapterFactory(FlowCallAdapterFactory.create())
             .addConverterFactory(GsonConverterFactory.create())
             .build()
     }

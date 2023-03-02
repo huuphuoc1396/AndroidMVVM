@@ -1,4 +1,4 @@
-package com.example.androidmvvm.domain.model.main
+package com.example.androidmvvm.domain.model.repo
 
 data class RepoModel(
     val id: Long,

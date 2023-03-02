@@ -5,6 +5,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.example.androidmvvm.databinding.FragmentMainBinding
+import com.example.androidmvvm.domain.model.repo.RepoModel
+import com.example.androidmvvm.domain.util.defaultFalse
+import com.example.androidmvvm.domain.util.defaultTrue
 import com.example.androidmvvm.ui.feature.main.list.RepoAdapter
 import com.example.androidmvvm.ui.platform.BaseFragment
 import com.example.androidmvvm.ui.util.extension.toast
@@ -36,15 +39,23 @@ class MainFragment : BaseFragment<FragmentMainBinding, MainViewModel>() {
 
     private fun initViewModel() = with(viewModel) {
         repoList.observe(viewLifecycleOwner) { repoList ->
-            hideRefreshing()
-            repoAdapter.submitList(repoList)
+            buildRepoList(repoList)
         }
 
-        isFirstRun.observe(viewLifecycleOwner) { isFirstRun ->
-            if (isFirstRun) {
-                context?.toast("First Run!!!")
-            }
+        firstRun.observe(viewLifecycleOwner) { isFirstRun ->
+            buildFirstRun(isFirstRun.defaultTrue())
         }
+    }
+
+    private fun buildFirstRun(isFirstRun: Boolean) {
+        if (isFirstRun) {
+            context?.toast("First Run!!!")
+        }
+    }
+
+    private fun buildRepoList(repoList: List<RepoModel>) {
+        hideRefreshing()
+        repoAdapter.submitList(repoList)
     }
 
     private fun hideRefreshing() {

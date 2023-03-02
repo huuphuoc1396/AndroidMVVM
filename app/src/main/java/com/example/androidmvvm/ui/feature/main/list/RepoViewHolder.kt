@@ -1,7 +1,7 @@
 package com.example.androidmvvm.ui.feature.main.list
 
 import com.example.androidmvvm.databinding.ItemRepoBinding
-import com.example.androidmvvm.domain.model.main.RepoModel
+import com.example.androidmvvm.domain.model.repo.RepoModel
 import com.example.androidmvvm.ui.platform.BaseBindingViewHolder
 import com.example.androidmvvm.ui.util.extension.setImageUrl
 

@@ -1,7 +1,7 @@
 package com.example.androidmvvm.data.remote.response.search_repo
 
 
-import com.example.androidmvvm.domain.model.main.RepoModel
+import com.example.androidmvvm.domain.model.repo.RepoModel
 import com.example.androidmvvm.domain.util.defaultEmpty
 import com.example.androidmvvm.domain.util.defaultZero
 import com.google.gson.annotations.SerializedName

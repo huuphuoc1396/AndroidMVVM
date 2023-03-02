@@ -10,11 +10,16 @@ import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModel
 import androidx.viewbinding.ViewBinding
 import com.example.androidmvvm.R
+import com.example.androidmvvm.domain.model.exception.RemoteException
+import com.example.androidmvvm.domain.util.defaultEmpty
 import com.example.androidmvvm.domain.util.defaultFalse
 import com.example.androidmvvm.ui.feature.MainActivity
 import com.example.androidmvvm.ui.feature.dialog.LoadingDialogFragment
 import com.example.androidmvvm.ui.feature.dialog.MessageDialogFragment
-import com.example.androidmvvm.ui.util.extension.*
+import com.example.androidmvvm.ui.util.extension.dismissIfAdded
+import com.example.androidmvvm.ui.util.extension.dismissKeyboard
+import com.example.androidmvvm.ui.util.extension.isAvailable
+import com.example.androidmvvm.ui.util.extension.showIfNotExist
 import com.example.androidmvvm.ui.util.livedata.autoCleared
 import timber.log.Timber
 
@@ -24,6 +29,7 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     private val navigator by lazy { mainActivity?.stackNavigator }
 
     abstract val viewModel: VM?
+    private val baseViewModel by lazy { viewModel as? BaseViewModel }
 
     abstract fun onCreateViewBinding(inflater: LayoutInflater, container: ViewGroup?): VB
 
@@ -57,16 +63,11 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
     }
 
     private fun observeBaseViewModel() {
-        val baseViewModel = viewModel as? BaseViewModel ?: return
-        baseViewModel.error.observe(this) { error ->
-            onError(error.getErrorMessage(context))
+        baseViewModel?.loading?.observe(this) { isLoading ->
+            onLoading(isLoading = isLoading)
         }
-
-        baseViewModel.isLoading.observe(this) { isLoading ->
-            onLoading(isLoading)
-        }
-        baseViewModel.tokenExpired.observe(this) {
-            // TODO: Handle expired token
+        baseViewModel?.error?.observe(this) { throwable ->
+            onError(message = throwable.toErrorMessage())
         }
     }
 
@@ -186,6 +187,30 @@ abstract class BaseFragment<VB : ViewBinding, VM : ViewModel> : Fragment() {
             onPermissionGranted = onPermissionGranted,
             onPermissionDenied = onPermissionDenied,
         )
+    }
+
+    fun Throwable.toErrorMessage(): String {
+        return when (this) {
+            is RemoteException -> {
+                when (getKind()) {
+                    RemoteException.Kind.NETWORK -> {
+                        getString(R.string.msg_no_internet_error)
+                    }
+                    RemoteException.Kind.HTTP -> {
+                        getString(R.string.msg_http_error_code, getResponse()?.code())
+                    }
+                    RemoteException.Kind.HTTP_422_WITH_DATA -> {
+                        getErrorData()?.message.defaultEmpty()
+                    }
+                    RemoteException.Kind.UNEXPECTED -> {
+                        getString(R.string.msg_unexpected_error)
+                    }
+                }
+            }
+            else -> {
+                this.message.defaultEmpty()
+            }
+        }
     }
 
     companion object {
